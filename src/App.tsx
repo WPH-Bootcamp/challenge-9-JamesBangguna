@@ -5,8 +5,8 @@ import { TrendingNow } from './components/section/TrendingNow';
 import NewRelease from './components/section/NewRelease';
 import Footer from './components/layout/Footer';
 
-import MovieDetail from './pages/MovieDetail';
-import Favorites from './pages/Favorites';
+import MovieDetail from './pages/MovieDetails';
+import Favorites from './pages/Favorite';
 import SearchPage from './pages/SearchPage'; // Berhasil menambahkan import SearchPage
 import { useMovieStore } from './store/useMovieStore';
 
