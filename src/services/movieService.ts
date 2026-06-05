@@ -1,21 +1,47 @@
-import api from '@/lib/axios';
-// import { Movie, MovieResponse } from '@/types/movie';
-
-// TODO: Create service functions to fetch data from TMDB API
-// Reference: https://developer.themoviedb.org/reference/intro/getting-started
+import { api } from '@/lib/axios';
 
 export const movieService = {
-  // TODO: Implement getPopularMovies function
-  // Endpoint: GET /movie/popular
+  getPopularMovies: async () => {
+    const { data } = await api.get('/movie/popular');
 
-  // TODO: Implement getNowPlayingMovies function
-  // Endpoint: GET /movie/now_playing
+    return data;
+  },
 
-  // TODO: Implement getMovieDetails function
-  // Endpoint: GET /movie/{movie_id}
+  getNowPlayingMovies: async () => {
+    const { data } = await api.get('/movie/now_playing');
 
-  // TODO: Implement searchMovies function
-  // Endpoint: GET /search/movie
+    return data;
+  },
 
-  // TODO: Add more endpoints as needed
+  getMovieDetail: async (movieId: string) => {
+    const { data } = await api.get(`/movie/${movieId}`);
+
+    return data;
+  },
+
+  getMovieCredits: async (movieId: string) => {
+    const { data } = await api.get(`/movie/${movieId}/credits`);
+
+    return data;
+  },
+
+  getMovieVideos: async (movieId: string) => {
+    const { data } = await api.get(`/movie/${movieId}/videos`);
+
+    return data;
+  },
+
+  getSimilarMovies: async (movieId: string) => {
+    const { data } = await api.get(`/movie/${movieId}/similar`);
+
+    return data;
+  },
+
+  searchMovies: async (query: string) => {
+    const { data } = await api.get('/search/movie', {
+      params: { query },
+    });
+
+    return data;
+  },
 };
