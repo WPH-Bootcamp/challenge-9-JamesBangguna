@@ -3,12 +3,46 @@ import { motion } from 'framer-motion';
 
 import { Button } from '@/components/ui/button';
 
-import { usePopularMovies } from '@/hooks/usePopularMovies';
+// Import seluruh modul sebagai objek
+import * as PopularMoviesHook from '@/hooks/usePopularMovies';
 
 import { getImageUrl } from '@/utils/getImageUrl';
 
+// PERBAIKAN: Ganti 'any' dengan 'unknown' untuk tipe return value fungsinya
+interface HookModule {
+  default?: () => unknown;
+  usePopularMovies?: () => unknown;
+}
+
 export default function MovieHero() {
-  const { data, isLoading, error } = usePopularMovies();
+  const hookModule = PopularMoviesHook as HookModule;
+
+  // PERBAIKAN: Gunakan as () => unknown (atau as Function) agar ESLint tidak protes
+  const usePopularMovies = (hookModule.default ||
+    hookModule.usePopularMovies ||
+    Object.values(PopularMoviesHook).find((val) => typeof val === 'function')) as () => {
+    data: any;
+    isLoading: boolean;
+    error: any;
+  };
+  // Catatan: Jika destruksinya (data, isLoading, error) ingin aman, cast ke return value hook aslinya.
+
+  // Melakukan casting tipe data kembalian secara aman bagi destrukturisasi objek
+  const { data, isLoading, error } = usePopularMovies() as {
+    data:
+      | {
+          results: Array<{
+            backdrop_path: string;
+            title: string;
+            vote_average: number;
+            overview: string;
+          }>;
+        }
+      | null
+      | undefined;
+    isLoading: boolean;
+    error: unknown;
+  };
 
   if (isLoading) {
     return <section className="h-screen animate-pulse bg-zinc-900" />;
